@@ -62,5 +62,7 @@
     {% if page.id in ['index', 'about', 'posts'] %}
     <div class="overlay"></div>
     {% endif %}
+
+    {% block js_footer %}{% endblock %}
 </body>
 </html>

@@ -25,13 +25,47 @@
 {% endblock %}
 
 {% block js_footer %}
-    {% if page.highlightjs|default('false') == true %}
+    {% if page.highlightjs|default('true') == true %}
     <script type="module">
         {% apply minify_js %}
         import hljs from '{{ asset('js/highlightjs/highlight.min.js') }}';
-        import css from '{{ asset('js/highlightjs/languages/css.min.js') }}';
 
-        hljs.registerLanguage('css', css);
+        {% set availableLanguages = [
+            'apache',
+            'bash',
+            'css',
+            'dockerfile',
+            'go',
+            'graphql',
+            'http',
+            'ini',
+            'javascript',
+            'json',
+            'kotlin',
+            'less',
+            'makefile',
+            'markdown',
+            'nginx',
+            'pgsql',
+            'php',
+            'php-template',
+            'plaintext',
+            'python',
+            'scss',
+            'shell',
+            'sql',
+            'twig',
+            'typescript',
+            'xml',
+            'yaml'
+        ] %}
+
+        {% for lang in availableLanguages %}
+            {% set import = lang|replace({'-': ''}) %}
+            import {{ import }} from '{{ asset('js/highlightjs/languages/' ~ lang ~ '.js') }}';
+            hljs.registerLanguage('{{ lang }}', {{ import }});
+        {% endfor %}
+
         hljs.highlightAll();
         {% endapply %}
     </script>
